@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form th:method = "POST" th:action = "@{/people/add}" th:object = "${person}">
+		<label for="name">Введите имя:</label>
+		<input type="text" th:field = "*{full_name}" id = "name"/>
+		<div th:if="${#fields.hasErrors('full_name')}" th:errors="*{full_name}">Name Error</div>
+	<br/>
+		<label for="date">Введите дату рождения:</label>
+		<input type="date" th:field = "*{birth_year}" id = "date" value="2022-01-01" min="1920-01-01" pattern="\d{4}-\d{2}-\d{2}"/>
+		<div th:if="${#fields.hasErrors('birth_year')}" th:errors="*{birth_year}">birth_year Error</div>
+	<br/>
+		<input type="submit" value = "Добавить"/>
+	</form>
+</body>
+</html>

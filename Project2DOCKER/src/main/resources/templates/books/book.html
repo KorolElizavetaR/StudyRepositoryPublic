@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>book</title>
+</head>
+<body>
+	<h1 th:text = "|'${book.getBookName()}' by ${book.getBook_author()}|"></h1>
+	<hr/>
+	Читатель:
+	<div th:if = "${owner == null}" th:text = "|У книги нет читателей|">
+	</div>
+	<form th:if = "${owner == null}" th:method = "PATCH" th:action = "@{/books/{id}/add(id=${book.getId()})}">
+		<label for="person">Выберите читателя:</label>
+			<select id = "person" th:object="${person}" th:field = "*{id}">
+				<option th:each="person : ${people}" th:value = "${person.getId()}" th:text="${person.getFull_name()}">
+				</option>
+			</select>
+			<input type ="submit" value="Назначить читателя"/>
+		</form>
+		
+	<p th:unless = "${owner == null}" th:text = "${owner.getFull_name()}"/>	
+	<p th:if = "!${owner == null} and ${book.isExpired()}" style="color:#FF0000" th:text = "|Дата взятия книги: ${book.getTimestamp()} (просрочено)|"/>
+	<p th:if = "!${owner == null} and !${book.isExpired()}" th:text = "|Дата взятия книги: ${book.getTimestamp()}|"/>
+
+	<form th:unless = "${owner == null}" th:method = "PATCH" th:action = "@{/books/{id}/remove(id=${book.getId()})}">
+			<input type ="submit" value="Убрать читателя"/>
+	</form>
+	<hr/>
+	<form action = "/books">
+		<input type="submit" value="Вернуться к книгам"/>
+	</form>
+	<form th:action = "@{/books/{id}/edit(id=${book.getId()})}">
+		<input type="submit" value="Редактировать книгу"/>
+	</form>`
+</body>
+</html>
